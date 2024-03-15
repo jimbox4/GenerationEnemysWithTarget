@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private Enemy _objectToSpawn;
+    [SerializeField] private Movement _prefab;
     [SerializeField, Min(0)] private float _delay;
     [SerializeField] private Transform[] _spawnPoints;
     [SerializeField] private Transform _target;
@@ -14,7 +14,6 @@ public class Spawner : MonoBehaviour
         if (_spawnPoints == null)
             return;
 
-        _objectToSpawn.GetComponent<Movement>()?.SetTarget(_target);
         StartCoroutine(SpawnObject(_delay));
     }
 
@@ -26,7 +25,10 @@ public class Spawner : MonoBehaviour
         while (enabled)
         {
             spawnPointIndex = Random.Range(0, _spawnPoints.Length);
-            Instantiate(_objectToSpawn, _spawnPoints[spawnPointIndex].position, _spawnPoints[spawnPointIndex].rotation);
+            Transform spawnPoint = _spawnPoints[spawnPointIndex];
+
+            Movement movement = Instantiate(_prefab, spawnPoint.position, spawnPoint.rotation);
+            movement.SetTarget(_target);
 
             yield return wait;
         }
