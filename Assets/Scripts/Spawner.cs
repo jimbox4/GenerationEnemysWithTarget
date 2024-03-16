@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
@@ -7,7 +6,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private Movement _prefab;
     [SerializeField, Min(0)] private float _delay;
     [SerializeField] private Transform[] _spawnPoints;
-    [SerializeField] private Transform _target;
+    [SerializeField] private Transform[] _targets;
 
     private void Start()
     {
@@ -28,7 +27,7 @@ public class Spawner : MonoBehaviour
             Transform spawnPoint = _spawnPoints[spawnPointIndex];
 
             Movement movement = Instantiate(_prefab, spawnPoint.position, spawnPoint.rotation);
-            movement.SetTarget(_target);
+            movement.Init(_targets);
 
             yield return wait;
         }
